@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swiss Raclette Recipe</title>
+
+<style>
+    /* ===== BASIC STYLES ===== */
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        color: #333;
+    }
+
+    .container {
+        max-width: 700px;
+        margin: auto;
+        padding: 20px;
+        background-color: white;
+        position: relative; /* Needed for confetti positioning */
+        overflow: hidden;
+    }
+
+    h1, h2 {
+        color: #2c2c2c;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    img {
+        width: 100%;
+        margin: 15px 0;
+        border-radius: 5px;
+    }
+
+    ul, ol {
+        padding-left: 20px;
+    }
+
+    button {
+        padding: 10px 15px;
+        background-color: #e63946;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+        transition: background-color 0.2s;
+    }
+
+    button:hover {
+        background-color: #c92f3c;
+    }
+
+    input {
+        padding: 8px;
+        width: 60px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    /* ===== INTERACTIVE BOXES ===== */
+    .interactive-box, .fun-fact-box {
+        background-color: #fffae6;
+        padding: 15px;
+        margin-top: 20px;
+        border-left: 5px solid #e63946;
+        border-radius: 5px;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .fun-fact-box {
+        font-style: italic;
+        transition: opacity 0.5s ease;
+    }
+
+    footer {
+        text-align: center;
+        font-size: 14px;
+        color: #777;
+        margin-top: 30px;
+    }
+
+    /* ===== CONFETTI ===== */
+    .confetti {
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        opacity: 1;
+        pointer-events: none;
+        animation: confetti-float 1s forwards;
+    }
+
+    @keyframes confetti-float {
+        from {
+            transform: translateY(0) rotate(0deg);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-80px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Swiss Raclette 🍽️</h1>
+
+    <p>
+        I discovered this classic Swiss raclette recipe after arriving in Switzerland.
+        It's a simple, cozy meal that brings people together.
+    </p>
+
+    <!-- ===== FUN FACT ===== -->
+    <div class="fun-fact-box" id="funFact">
+        🇨🇭 Fun Fact: Switzerland has over 450 types of cheese!
+    </div>
+    <button onclick="showRandomFact()">Show Another Fun Fact 🧀</button>
+
+    <img src="https://upload.wikimedia.org/wikipedia/commons/7/7d/Raclette_2005.jpg"
+         alt="Swiss Raclette">
+
+    <h2>Ingredients</h2>
+    <ul>
+        <li>Raclette cheese (200 g per person)</li>
+        <li>Small potatoes</li>
+        <li>Pickles (cornichons)</li>
+        <li>Pickled onions</li>
+        <li>Black pepper</li>
+    </ul>
+
+    <h2>Instructions</h2>
+    <ol>
+        <li>Boil potatoes until tender.</li>
+        <li>Heat the raclette cheese.</li>
+        <li>Pour cheese over potatoes.</li>
+        <li>Add pickles and pepper.</li>
+        <li>Enjoy immediately.</li>
+    </ol>
+
+    <!-- ===== CHEESE CALCULATOR ===== -->
+    <div class="interactive-box">
+        <h2>Cheese Calculator 🧀</h2>
+        <input type="number" id="people" min="1" placeholder="People">
+        <button onclick="calculateCheese()">Calculate</button>
+        <p id="result"></p>
+    </div>
+
+    <footer>
+        Simple Swiss Raclette Recipe • HTML, CSS & JavaScript
+    </footer>
+</div>
+
+<script>
+    /* ===== CHEESE CALCULATOR ===== */
+    function calculateCheese() {
+        const people = document.getElementById("people").value;
+
+        if (!people || people <= 0) {
+            document.getElementById("result").textContent =
+                "Please enter a valid number.";
+            return;
+        }
+
+        document.getElementById("result").textContent =
+            `You need about ${people * 200} grams of cheese.`;
+
+        launchConfetti(20);
+    }
+
+    /* ===== FUN FACTS ===== */
+    const funFacts = [
+        "Switzerland has four official languages.",
+        "Raclette means 'to scrape' in French.",
+        "Switzerland has over 1,500 lakes.",
+        "Swiss watches are famous worldwide.",
+        "Swiss chocolate is considered among the best."
+    ];
+
+    function showRandomFact() {
+        const box = document.getElementById("funFact");
+        box.style.opacity = 0;
+
+        setTimeout(() => {
+            box.textContent =
+                "🇨🇭 Fun Fact: " + funFacts[Math.floor(Math.random() * funFacts.length)];
+            box.style.opacity = 1;
+            launchConfetti(15);
+        }, 500);
+    }
+
+    /* ===== CONFETTI FUNCTION ===== */
+    function launchConfetti(amount) {
+        const container = document.querySelector(".container");
+
+        for (let i = 0; i < amount; i++) {
+            const confetti = document.createElement("div");
+            confetti.className = "confetti";
+            confetti.style.backgroundColor = randomColor();
+            confetti.style.left = Math.random() * container.offsetWidth + "px";
+            confetti.style.top = container.offsetHeight + "px";
+            container.appendChild(confetti);
+
+            setTimeout(() => confetti.remove(), 1000);
+        }
+    }
+
+    function randomColor() {
+        const colors = ["#e63946", "#ffbe0b", "#457b9d", "#a8dadc"];
+        return colors[Math.floor(Math.random() * colors.length)];
+    }
+</script>
+
+</body>
+</html>
